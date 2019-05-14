@@ -20,12 +20,19 @@ class Player(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		player_img = pygame.image.load(path.join(img_dir,'p1.png')).convert()
 		self.image = player_img
-		self.image = pygame.transform.scale(player_img, (50,30))
+		self.image = pygame.transform.scale(player_img, (50,50))
 		self.image.set_colorkey(BLACK)
 		self.rect = self.image.get_rect()
 		self.rect.centerx = largura/2
 		self.rect.bottom = altura - 10
 		self.speedx = 0
+
+		def update(self):
+			self.rect.x += self.speedx
+			if self.rect.right > largura:
+				self.rect.right = largura
+			if self.rect.left < 0:
+				self.rect.left = 0
 
 
 
@@ -45,6 +52,17 @@ try:
 	run = True
 	while run:
 		clock.tick(FPS)
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				run = False
+
+		all_sprites.update()
+		tela.fill(BLACK)
+		tela.blit(fundo, fundo_rect)
+		all_sprites.draw(tela)
+		pygame.display.flip()
+
+
 
 finally:
 	pygame.quit()
