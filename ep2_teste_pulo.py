@@ -23,17 +23,21 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(player_img, (50,50))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH/2
-        self.rect.bottom = HEIGHT - 10
+        self.rect.x = WIDTH/2
+        self.rect.y = HEIGHT/2
+        #self.rect.bottom = HEIGHT - 10
         self.speedx = 0
+        self.speedy = 0
         raio = 25
 
     def update(self):
         self.rect.x += self.speedx
+        self.rect.y += self.speedy
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
+#como fazer o sprite ficar dentro da tela no eixo y???
 
 
 pygame.init()
@@ -64,20 +68,29 @@ try:
                 if event.key == pygame.K_RIGHT:
                     player.speedx = 8
 
-                if event.key == pygame.K_SPACE:
-                    tiro = Tiro(player.rect.centerx, player.rect.top)
-                    all_sprites.add(tiro)
+                if event.key == pygame.K_UP:
+                    player.speedy = -8
 
+                if event.key == pygame.K_DOWN:
+                    player.speedy = 8
+
+                if event.key == pygame.K_SPACE:
+                    player.speedy = -8
+#como fazer o sprite pular                    
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     player.speedx = 0
                 if event.key == pygame.K_RIGHT:
                     player.speedx = 0
+                if event.key == pygame.K_UP:
+                    player.speedy = 0
+                if event.key == pygame.K_DOWN:
+                    player.speedy = 0
+                if event.key == pygame.K_SPACE:
+                    player.speedy = 0
 
         all_sprites.update()
-
-
         tela.fill(BLACK)
         tela.blit(fundo, fundo_rect)
         all_sprites.draw(tela)
